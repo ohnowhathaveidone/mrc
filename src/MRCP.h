@@ -5,7 +5,7 @@
 const  char MRCP_END_FRAME = '\r';
 
 // const  char MRCP_END_FRAME   = 'E';
-const  char MRCP_START_FRAME = ':';
+const  char MRCP_START_FRAME = 'S'; //':'; //WTF!
 
 const  char MRCP_COMMAND_QUEUE_IN = 'Q';
 const  char MRCP_COMMAND_EXECUTE  = 'E';

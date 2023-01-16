@@ -1,3 +1,4 @@
+#include "Arduino.h"
 #include "EEPromStorage.h"
 #include <EEPROM.h>
 #include "Logger.h"

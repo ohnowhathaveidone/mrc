@@ -13,12 +13,12 @@
 
 // pinNumber, maxAngularVel degree/sec, calibMin, calibMax, angleDegMin, angleDegMax, home position
 const float servoConfig[6][7] = {
-    { pin_servo_0,  300 * DEG_TO_RAD,  700.00, 2380.00,  -90.00 * DEG_TO_RAD,  90.00 * DEG_TO_RAD, 0 },
-    { pin_servo_1,  300 * DEG_TO_RAD,  710.00, 1909.00,  -45.00 * DEG_TO_RAD,  90.00 * DEG_TO_RAD, 0 },
-    { pin_servo_2,  300 * DEG_TO_RAD, 2290.00,  650.00,  -45.00 * DEG_TO_RAD, 135.00 * DEG_TO_RAD, 0 },
-    { pin_servo_3,  300 * DEG_TO_RAD,  740.00, 2260.00,  -90.00 * DEG_TO_RAD,  85.00 * DEG_TO_RAD, 0 },
-    { pin_servo_4,  300 * DEG_TO_RAD,  730.00, 2340.00, -140.00 * DEG_TO_RAD,  15.00 * DEG_TO_RAD, 0 },
-    { pin_servo_5,  300 * DEG_TO_RAD,  740.00, 2200.00,  -90.00 * DEG_TO_RAD,  60.00 * DEG_TO_RAD, 0 }
+    { pin_servo_0,  150 * DEG_TO_RAD,  600.00, 2400.00, -150.00 * DEG_TO_RAD, 150.00 * DEG_TO_RAD, 0 },
+    { pin_servo_1,  150 * DEG_TO_RAD,  600.00, 2400.00,  -90.00 * DEG_TO_RAD,  50.00 * DEG_TO_RAD, 0 },
+    { pin_servo_2,  150 * DEG_TO_RAD, 1060.00, 2100.00,  -45.00 * DEG_TO_RAD,  45.00 * DEG_TO_RAD, 0 },
+    { pin_servo_3,  150 * DEG_TO_RAD,  560.00, 2400.00, -135.00 * DEG_TO_RAD, 135.00 * DEG_TO_RAD, 0 },
+    { pin_servo_4,  150 * DEG_TO_RAD,  600.00, 2400.00,  -90.00 * DEG_TO_RAD,  90.00 * DEG_TO_RAD, 0 },
+    { pin_servo_5,  150 * DEG_TO_RAD,  600.00, 2400.00,  -90.00 * DEG_TO_RAD,  90.00 * DEG_TO_RAD, 0 }
 };
 
 // mor mp-robot-a/mp-robot-kit
@@ -48,11 +48,11 @@ float logicAngleLimits[6][2] = {
 
 // relation between physical and logical angles based on robot kinematic coupling.
 void logicalToPhysicalAngles(float angles[6]) {
-    angles[2] += angles[1];
+    //angles[2] += angles[1]; //this causes the robot to do fanuc-like whale tailing...
 }
 
 void physicalToLogicalAngles(float angles[6]) {
-    angles[2] -= angles[1];
+    //angles[2] -= angles[1];
 }
 
 // 4 axis

@@ -2,7 +2,8 @@
 #define EEPROMSTORAGE_H 1
 
 
-#define EEPROM_SIZE 2048 // Teensy 3.2
+//#define EEPROM_SIZE 2048 // Teensy 3.2
+#define EEPROM_SIZE 4284 // Teensy 4.1
 
 
 /**

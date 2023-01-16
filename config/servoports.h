@@ -11,4 +11,4 @@
 #define pin_servo_7 21
 
 #define pin_additional_servo_6 20
-#define pin_additional_servo_7 -1
+#define pin_additional_servo_7 21

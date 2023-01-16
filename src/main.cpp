@@ -1,4 +1,4 @@
-// #define EXAMPLES 1 //uncomment to use examples
+//#define EXAMPLES 1 //uncomment to use examples
 #ifdef EXAMPLES
 
 // #include "../examples/Servos.h"
@@ -6,7 +6,7 @@
 # include "../examples/CalibrateServos.h"
 #else // ifdef EXAMPLES
 
-// # include "../config/mp-robot-d.h"
+//# include "../config/mp-robot-d.h"
 # include "../config/mp-robot-kit.h"
 # include <Arduino.h>
 # include "VarSpeedServo.h"
@@ -44,7 +44,7 @@ void onIncomingData(char c);
 
 VarSpeedServo   *servos[8];
 Kinematic *Kin;
-Display    Display;
+//Display    Display;
 
 MRILParser *Mrilparser;
 RobotController *RoboCon;
@@ -60,8 +60,8 @@ MRCPParser   *Mrcpparser;
 EEPromStorage Eepromstorage;
 RingBuffer    Ringbuffer(RINGBUFFER_SIZE);
 
-# define SERVOMIN  200  // usually 1000us
-# define SERVOMAX  2800 // usually 2000us
+# define SERVOMIN  500  // usually 1000us
+# define SERVOMAX  2500 // usually 2000us
 
 # define updateServosEveryMs 20
 
@@ -72,14 +72,14 @@ Logger logger("main");
 void setup()
 {
     Serial.begin(9600);
-// Eepromstorage.clear();
+    Eepromstorage.clear();
     // --- show start screen ---
-    Display.begin();
-    Display.clear();
-    Display.displayText(0, 0, "STARTING");
-    Display.displayRobotGeometry(geometry);
-    Display.show();
-    delay(1000);
+    //Display.begin();
+    //Display.clear();
+    //Display.displayText(0, 0, "STARTING");
+    //Display.displayRobotGeometry(geometry);
+    //Display.show();
+    //delay(1000);
 
     // --- init servos ---
 
@@ -95,7 +95,8 @@ void setup()
 
         // servos[i]->setTargetRadAngle(0);
     }
-
+    Serial.println("servos intialized.");
+    
     // additional axis
     for (size_t i = 0; i < 2; i++) {
         servos[i + 6] = new VarSpeedServo(additionalAxisServoConfig[i][0],
@@ -106,28 +107,32 @@ void setup()
                                     additionalAxisServoConfig[i][5]
                                     );
     }
-
+    Serial.println("additional axis initialized");
+    
     // Kinematic
     Kin = new Kinematic(geometry);
 
-    Display.displayText(0, 8 * 1, "KIN");
-    Display.show();
-    delay(100);
-
+    //Display.displayText(0, 8 * 1, "KIN");
+    //Display.show();
+    //delay(100);
+    Serial.println("kinematic initialized");
+    
     // Robot Controller
     RoboCon = new RobotController(servos, *Kin, logicAngleLimits, logicalToPhysicalAngles, physicalToLogicalAngles); // todo make function
                                                                                                                      // optional
-
-    Display.displayText(0, 8 * 2, "Con");
-    Display.show();
-    delay(100);
+    Serial.println("robot connection initialized");
+    
+    //Display.displayText(0, 8 * 2, "Con");
+    //Display.show();
+    //delay(100);
 
     // Additional Axis
     AxisController = new AdditionalAxisController(servos + 6);
-
-    Display.displayText(0, 8 * 3, "Axis");
-    Display.show();
-    delay(100);
+    Serial.println("additional axis controller initialized");
+    
+    //Display.displayText(0, 8 * 3, "Axis");
+    //Display.show();
+    //delay(100);
 
     // MRIL Parser
     Mrilparser = new MRILParser(*RoboCon,
@@ -135,26 +140,31 @@ void setup()
                                 *AxisController,
                                 WaitController,
                                 Mrcpr);
-    Display.displayText(40, 8 * 1, "MRIL");
-    Display.show();
-    delay(100);
-
+    //Display.displayText(40, 8 * 1, "MRIL");
+    //Display.show();
+    //delay(100);
+    Serial.println("MRIL parser initialized");
+    
     // MRCP Parser
+    
     Mrcpparser = new MRCPParser(Eepromstorage,
                                 Ringbuffer,
                                 *Mrilparser,
                                 Mrcpr);
-    Display.displayText(40, 8 * 2, "MRCP");
-    Display.show();
-    delay(100);
-
+    
+    //Display.displayText(40, 8 * 2, "MRCP");
+    //Display.show();
+    //delay(100);
+    Serial.println("MRCP parser initialized");
+    
     // link MRCP to incoming data
     Serialio.onData(onIncomingData);
-
+    Serial.println("serialIO incoming data initialized");
 
     RoboCon->setMovementMethod(RobotController::MOVEMENT_METHODS::LINEAR);
     RoboCon->setMaxVelocity(10);
-
+    Serial.println("init motion properties set");
+    
     // init Timer and register callback
     Timer1.initialize(updateServosEveryMs * 1000); // 20ms
     Timer1.attachInterrupt(updateServos);
@@ -162,10 +172,11 @@ void setup()
     pinMode(pin_internal_led,            OUTPUT);
     pinMode(pin_servo_update_status_led, OUTPUT);
     digitalWrite(pin_internal_led, HIGH);
+    Serial.println("setup finished");
 }
 
 void onIncomingData(char c) {
-    // Serial.print(c); // send back received data
+    Serial.print(c); // send back received data
     Mrcpparser->parseChar(c);
 }
 
@@ -187,21 +198,20 @@ void updateServos() {
 
 }
 
-void renderDisplay();
+//void renderDisplay();
 
 
 void loop()
 {
-
     static unsigned int displayCounter = 0;
 
     logger.resetTime();
 
     RoboCon->process();// should be part of ISR, but then the display is not working propery. I2C also requires an interrupt
     // status led
-    // digitalWrite(pin_internal_led, HIGH);
+    digitalWrite(pin_internal_led, HIGH);
     if (displayCounter++ >= 20000) {
-        renderDisplay(); // takes ~50 ms
+        //renderDisplay(); // takes ~50 ms
         displayCounter = 0;
     }
 
@@ -225,6 +235,7 @@ void loop()
     }
 }
 
+/*
 void renderDisplay() {
     Display.clear();
     Display.displayRobot(Kin, RoboCon, 10, 20, 0.5, 1);
@@ -292,5 +303,5 @@ void renderDisplay() {
     }
     Display.show(); // takes 40 ms!
 }
-
+*/
 #endif // ifdef EXAMPLES
