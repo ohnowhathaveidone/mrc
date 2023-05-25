@@ -117,28 +117,6 @@ does not move to 0° according to the above diagram, adjust the angles or PWM va
  PRINT_HELP 'h'
 ```
 
-## Kinematics Logical - Physical Angles
-The MRC uses two types of angles - logical and physical angles.
-Logical joint angles are used internally by the robot controller and are the result of the IK calculation. The robot is therefore modeled as a series of joints and links. However, a real physical robot may use mechanical links to move some axis. Therefore moving R1 may also move R2, because of the kinematic linking.
-
-To account for mechanical kinematics, the methods logicalToPhysicalAngles and physicalToLogicalAngles are used.
-On the robot depicted below, both motors for J1 and J2 are at the position of J1. A link is used to drive J2.
-Therefore moving only R1 also decreases the angle of J2. To not move J2, R2 has to move the same amount as R1.
-
-<img width="1151" alt="bildschirmfoto 2017-05-15 um 12 13 07" src="https://cloud.githubusercontent.com/assets/3062564/26053118/e25bf600-3967-11e7-90ac-8fb8fd248fc0.png">
-
-This is represented using the methods like this:
-
-```cpp
-void logicalToPhysicalAngles(float angles[6]) {
-    angles[2] += angles[1];
-}
-
-void physicalToLogicalAngles(float angles[6]) {
-    angles[2] -= angles[1];
-}
-```
-
 ## Tests
 For testing and mocking gMock/gTest is used.
 To run the tests `/tests/test.h`.
