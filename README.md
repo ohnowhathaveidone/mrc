@@ -25,7 +25,7 @@ All configurations and settings are based on the robot model depiced below.
 Clone the repo
 
 ```shell
-git clone https://github.com/glumb/mrc.git
+git clone https://github.com/ohnowhathaveidone/mrc.git
 ```
 
 
